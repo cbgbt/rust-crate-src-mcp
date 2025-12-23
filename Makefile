@@ -1,10 +1,25 @@
-.PHONY: build test integ
+.PHONY: build release test lint format format-check check integ
 
 build:
-	cargo build
+	cargo build --quiet
+
+release:
+	cargo build --quiet --release
 
 test:
-	cargo test
+	cargo test --quiet
 
 integ:
-	cargo test -- --ignored
+	cargo test --quiet -- --ignored
+
+lint:
+	cargo clippy --quiet -- -D warnings
+	@python3 scripts/lint_loc.py
+
+format:
+	cargo fmt --quiet
+
+format-check:
+	cargo fmt --quiet -- --check
+
+check: format .WAIT test lint format-check
