@@ -32,5 +32,22 @@ pub async fn get_crate_source(
     crate_name: &str,
     version_req: Option<&str>,
 ) -> Result<CrateSource, GetCrateSourceError> {
-    todo!()
+    use get_crate_source_error::*;
+    use snafu::ResultExt;
+    
+    let version = version::resolve_version(crate_name, version_req)
+        .await
+        .context(ResolveVersionSnafu)?;
+    let checkout_path = extract::extract_crate(crate_name, &version)
+        .await
+        .context(ExtractSnafu)?;
+    let message = format!("Crate '{}' version {} extracted to {}", 
+        crate_name, version, checkout_path.display());
+    
+    Ok(CrateSource::builder()
+        .crate_name(crate_name)
+        .version(version)
+        .checkout_path(checkout_path)
+        .message(message)
+        .build())
 }
