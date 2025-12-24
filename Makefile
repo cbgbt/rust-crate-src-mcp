@@ -1,4 +1,4 @@
-.PHONY: build release test lint format format-check check integ
+.PHONY: build release test lint format format-check check integ deny
 
 build:
 	cargo build --quiet
@@ -22,4 +22,7 @@ format:
 format-check:
 	cargo fmt --quiet -- --check
 
-check: format .WAIT test lint format-check
+deny:
+	cargo deny --locked check
+
+check: format .WAIT test lint format-check deny

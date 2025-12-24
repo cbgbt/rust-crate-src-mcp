@@ -1,0 +1,49 @@
+[graph]
+targets = []
+all-features = false
+no-default-features = false
+
+[licenses]
+allow = [
+    "MIT",
+    "Apache-2.0",
+    "BSD-2-Clause",
+    "BSD-3-Clause",
+    "ISC",
+    "Zlib",
+    "Unicode-3.0",
+    "CC0-1.0",
+    "MPL-2.0",
+    "CDLA-Permissive-2.0",
+]
+confidence-threshold = 0.8
+unused-allowed-license = "allow"
+
+[bans]
+multiple-versions = "deny"
+wildcards = "allow"
+highlight = "all"
+skip = [
+    # Transitive deps with version splits across rmcp/bon/tokio ecosystem
+    { crate = "darling", reason = "bon and rmcp-macros use different versions" },
+    { crate = "darling_core", reason = "bon and rmcp-macros use different versions" },
+    { crate = "darling_macro", reason = "bon and rmcp-macros use different versions" },
+    { crate = "windows-core", reason = "transitive dep version split" },
+    { crate = "windows-link", reason = "transitive dep version split" },
+    { crate = "windows-result", reason = "transitive dep version split" },
+    { crate = "windows-strings", reason = "transitive dep version split" },
+    { crate = "windows-sys", reason = "transitive dep version split" },
+    { crate = "windows-targets", reason = "transitive dep version split" },
+    { crate = "windows_aarch64_gnullvm", reason = "transitive dep version split" },
+    { crate = "windows_aarch64_msvc", reason = "transitive dep version split" },
+    { crate = "windows_i686_gnu", reason = "transitive dep version split" },
+    { crate = "windows_i686_gnullvm", reason = "transitive dep version split" },
+    { crate = "windows_i686_msvc", reason = "transitive dep version split" },
+    { crate = "windows_x86_64_gnu", reason = "transitive dep version split" },
+    { crate = "windows_x86_64_gnullvm", reason = "transitive dep version split" },
+    { crate = "windows_x86_64_msvc", reason = "transitive dep version split" },
+]
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"
