@@ -21,7 +21,7 @@ unused-allowed-license = "allow"
 
 [bans]
 multiple-versions = "deny"
-wildcards = "allow"
+wildcards = "deny"
 highlight = "all"
 skip = [
     # Transitive deps with version splits across rmcp/bon/tokio ecosystem
