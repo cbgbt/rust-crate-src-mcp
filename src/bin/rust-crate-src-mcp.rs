@@ -10,13 +10,14 @@ use rmcp::{
 };
 use rust_crate_src_mcp::get_crate_source;
 use schemars::JsonSchema;
+use serde::Deserialize;
 
 #[derive(Clone)]
 pub struct Server {
     tool_router: ToolRouter<Self>,
 }
 
-#[derive(serde::Deserialize, JsonSchema)]
+#[derive(Deserialize, JsonSchema)]
 struct GetCrateSourceRequest {
     crate_name: String,
     version: Option<String>,

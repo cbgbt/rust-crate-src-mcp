@@ -2,7 +2,7 @@ pub mod extract;
 pub mod version;
 
 use bon::Builder;
-use snafu::Snafu;
+use snafu::{ResultExt, Snafu};
 use std::path::PathBuf;
 
 #[derive(Debug, Clone, Builder)]
@@ -15,23 +15,11 @@ pub struct CrateSource {
     pub message: String,
 }
 
-#[derive(Debug, Snafu)]
-#[snafu(module)]
-pub enum GetCrateSourceError {
-    #[snafu(display("failed to resolve version"))]
-    ResolveVersion {
-        source: version::ResolveVersionError,
-    },
-    #[snafu(display("failed to extract crate"))]
-    Extract { source: extract::ExtractError },
-}
-
 pub async fn get_crate_source(
     crate_name: &str,
     version_req: Option<&str>,
 ) -> Result<CrateSource, GetCrateSourceError> {
     use get_crate_source_error::*;
-    use snafu::ResultExt;
 
     let version = version::resolve_version(crate_name, version_req)
         .await
@@ -52,4 +40,15 @@ pub async fn get_crate_source(
         .checkout_path(checkout_path)
         .message(message)
         .build())
+}
+
+#[derive(Debug, Snafu)]
+#[snafu(module)]
+pub enum GetCrateSourceError {
+    #[snafu(display("failed to resolve version"))]
+    ResolveVersion {
+        source: version::ResolveVersionError,
+    },
+    #[snafu(display("failed to extract crate"))]
+    Extract { source: extract::ExtractError },
 }

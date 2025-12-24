@@ -1,23 +1,20 @@
 use snafu::Snafu;
 
-#[derive(Debug, Snafu)]
-#[snafu(module)]
-pub enum ResolveVersionError {
-    #[snafu(display("failed to query crates.io for crate '{crate_name}'"))]
-    CratesIoQuery {
-        crate_name: String,
-        source: reqwest::Error,
-    },
-    #[snafu(display("failed to parse semver requirement '{requirement}'"))]
-    SemverParse {
-        requirement: String,
-        source: semver::Error,
-    },
-    #[snafu(display("no version matching '{requirement}' found for crate '{crate_name}'"))]
-    NoMatchingVersion {
-        crate_name: String,
-        requirement: String,
-    },
+#[derive(serde::Deserialize)]
+struct CrateResponse {
+    #[serde(rename = "crate")]
+    crate_info: CrateInfo,
+    versions: Vec<VersionInfo>,
+}
+
+#[derive(serde::Deserialize)]
+struct CrateInfo {
+    max_version: String,
+}
+
+#[derive(serde::Deserialize)]
+struct VersionInfo {
+    num: String,
 }
 
 pub async fn resolve_version(
@@ -31,7 +28,7 @@ pub async fn resolve_version(
     let url = format!("https://crates.io/api/v1/crates/{}", crate_name);
     let resp = client
         .get(&url)
-        .header("User-Agent", "rust-crate-src")
+        .header("User-Agent", "rust-crate-src-mcp")
         .send()
         .await
         .context(CratesIoQuerySnafu { crate_name })?
@@ -62,19 +59,22 @@ pub async fn resolve_version(
     }
 }
 
-#[derive(serde::Deserialize)]
-struct CrateResponse {
-    #[serde(rename = "crate")]
-    crate_info: CrateInfo,
-    versions: Vec<VersionInfo>,
-}
-
-#[derive(serde::Deserialize)]
-struct CrateInfo {
-    max_version: String,
-}
-
-#[derive(serde::Deserialize)]
-struct VersionInfo {
-    num: String,
+#[derive(Debug, Snafu)]
+#[snafu(module)]
+pub enum ResolveVersionError {
+    #[snafu(display("failed to query crates.io for crate '{crate_name}'"))]
+    CratesIoQuery {
+        crate_name: String,
+        source: reqwest::Error,
+    },
+    #[snafu(display("failed to parse semver requirement '{requirement}'"))]
+    SemverParse {
+        requirement: String,
+        source: semver::Error,
+    },
+    #[snafu(display("no version matching '{requirement}' found for crate '{crate_name}'"))]
+    NoMatchingVersion {
+        crate_name: String,
+        requirement: String,
+    },
 }
