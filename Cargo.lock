@@ -1123,7 +1123,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "rust-crate-src"
+name = "rust-crate-src-mcp"
 version = "0.1.0"
 dependencies = [
  "anyhow",

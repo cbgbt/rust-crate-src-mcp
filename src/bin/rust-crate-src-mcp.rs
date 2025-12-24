@@ -8,7 +8,7 @@ use rmcp::{
     tool, tool_handler, tool_router,
     transport::stdio,
 };
-use rust_crate_src::get_crate_source;
+use rust_crate_src_mcp::get_crate_source;
 use schemars::JsonSchema;
 
 #[derive(Clone)]

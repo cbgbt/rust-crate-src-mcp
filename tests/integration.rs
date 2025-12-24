@@ -6,7 +6,7 @@ use tokio::process::Command;
 #[ignore]
 async fn test_get_rust_crate_source() -> anyhow::Result<()> {
     let mut cmd = Command::new("cargo");
-    cmd.arg("run").arg("--bin").arg("mcp-server");
+    cmd.arg("run").arg("--bin").arg("rust-crate-src-mcp");
     let transport = TokioChildProcess::new(cmd)?;
     let client = ().serve(transport).await?;
 
