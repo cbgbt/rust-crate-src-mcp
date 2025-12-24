@@ -25,4 +25,5 @@ format-check:
 deny:
 	cargo deny --locked check
 
-check: format .WAIT test lint format-check deny
+check: format
+	$(MAKE) test lint format-check deny
