@@ -53,3 +53,11 @@ make integ    # Run integration tests (requires network)
 ## For AI Agents
 
 See [AGENTS.md](AGENTS.md) for development guidelines.
+
+## Acknowledgments
+
+This project is based on the `get_rust_crate_source` tool from [symposium](https://github.com/anthropics/symposium).
+
+## License
+
+Licensed under either of Apache License, Version 2.0 or MIT license at your option.
