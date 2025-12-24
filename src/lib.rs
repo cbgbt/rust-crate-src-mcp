@@ -1,5 +1,5 @@
-pub mod version;
 pub mod extract;
+pub mod version;
 
 use bon::Builder;
 use snafu::Snafu;
@@ -23,9 +23,7 @@ pub enum GetCrateSourceError {
         source: version::ResolveVersionError,
     },
     #[snafu(display("failed to extract crate"))]
-    Extract {
-        source: extract::ExtractError,
-    },
+    Extract { source: extract::ExtractError },
 }
 
 pub async fn get_crate_source(
@@ -34,16 +32,20 @@ pub async fn get_crate_source(
 ) -> Result<CrateSource, GetCrateSourceError> {
     use get_crate_source_error::*;
     use snafu::ResultExt;
-    
+
     let version = version::resolve_version(crate_name, version_req)
         .await
         .context(ResolveVersionSnafu)?;
     let checkout_path = extract::extract_crate(crate_name, &version)
         .await
         .context(ExtractSnafu)?;
-    let message = format!("Crate '{}' version {} extracted to {}", 
-        crate_name, version, checkout_path.display());
-    
+    let message = format!(
+        "Crate '{}' version {} extracted to {}",
+        crate_name,
+        version,
+        checkout_path.display()
+    );
+
     Ok(CrateSource::builder()
         .crate_name(crate_name)
         .version(version)

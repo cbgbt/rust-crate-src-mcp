@@ -1,9 +1,12 @@
 use rmcp::{
     ServerHandler, ServiceExt,
     handler::server::{router::tool::ToolRouter, wrapper::Parameters},
+    model::{
+        CallToolResult, Content, ErrorCode, ErrorData, Implementation, ServerCapabilities,
+        ServerInfo,
+    },
     tool, tool_handler, tool_router,
     transport::stdio,
-    model::{CallToolResult, Content, ErrorCode, ErrorData, Implementation, ServerCapabilities, ServerInfo},
 };
 use rust_crate_src::get_crate_source;
 use schemars::JsonSchema;
@@ -19,6 +22,12 @@ struct GetCrateSourceRequest {
     version: Option<String>,
 }
 
+impl Default for Server {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 #[tool_router]
 impl Server {
     pub fn new() -> Self {
@@ -27,11 +36,13 @@ impl Server {
         }
     }
 
-    #[tool(description = "Download and extract Rust crate source code from crates.io. Use this to:
+    #[tool(
+        description = "Download and extract Rust crate source code from crates.io. Use this to:
 - Debug compilation errors by reading the source of dependencies
 - Understand how a crate implements specific functionality
 - Evaluate potential dependencies before adding them
-- Find usage examples in a crate's internal code")]
+- Find usage examples in a crate's internal code"
+    )]
     async fn get_rust_crate_source(
         &self,
         params: Parameters<GetCrateSourceRequest>,
@@ -46,7 +57,9 @@ impl Server {
             "checkout_path": result.checkout_path.display().to_string(),
             "message": result.message,
         });
-        Ok(CallToolResult::success(vec![Content::text(json.to_string())]))
+        Ok(CallToolResult::success(vec![Content::text(
+            json.to_string(),
+        )]))
     }
 }
 
