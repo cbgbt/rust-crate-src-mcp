@@ -19,7 +19,7 @@ let source = get_crate_source("tokio", Some("^1.0")).await?;
 ### As an MCP Server
 
 ```bash
-cargo run --bin mcp-server
+cargo run --bin rust-crate-src-mcp
 ```
 
 Exposes the `get_rust_crate_source` tool:
@@ -48,7 +48,7 @@ make integ    # Run integration tests (requires network)
 | `lib.rs` | Public API facade |
 | `version.rs` | Version resolution via crates.io API |
 | `extract.rs` | Download and extract .crate tarballs |
-| `bin/mcp-server.rs` | MCP server using rmcp |
+| `bin/rust-crate-src-mcp.rs` | MCP server using rmcp |
 
 ## For AI Agents
 
@@ -56,7 +56,7 @@ See [AGENTS.md](AGENTS.md) for development guidelines.
 
 ## Acknowledgments
 
-This project is based on the `get_rust_crate_source` tool from [symposium](https://github.com/anthropics/symposium).
+This project is based on the `get_rust_crate_source` tool from [symposium](https://github.com/symposium-dev/symposium).
 
 ## License
 
