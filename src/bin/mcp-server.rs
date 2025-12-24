@@ -27,7 +27,11 @@ impl Server {
         }
     }
 
-    #[tool(description = "Download and extract Rust crate source code from crates.io")]
+    #[tool(description = "Download and extract Rust crate source code from crates.io. Use this to:
+- Debug compilation errors by reading the source of dependencies
+- Understand how a crate implements specific functionality
+- Evaluate potential dependencies before adding them
+- Find usage examples in a crate's internal code")]
     async fn get_rust_crate_source(
         &self,
         params: Parameters<GetCrateSourceRequest>,
