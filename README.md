@@ -2,6 +2,26 @@
 
 Fetch Rust crate source code from crates.io. Available as a library and MCP server.
 
+## Installing
+
+Install via cargo:
+
+```bash
+cargo install rust-crate-src-mcp
+```
+
+Configure in your `mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "rust-crate-src": {
+      "command": "rust-crate-src-mcp"
+    }
+  }
+}
+```
+
 ## Usage
 
 ### As a Library
@@ -16,11 +36,7 @@ println!("Extracted to: {}", source.checkout_path.display());
 let source = get_crate_source("tokio", Some("^1.0")).await?;
 ```
 
-### As an MCP Server
-
-```bash
-cargo run --bin rust-crate-src-mcp
-```
+## MCP Tool
 
 Exposes the `get_rust_crate_source` tool:
 - **crate_name** (required): Name of the crate to fetch
